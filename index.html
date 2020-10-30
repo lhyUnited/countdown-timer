@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.14.0/lib/theme-chalk/index.css">
   <link rel="stylesheet" href="./style.css">
   <title>Timer</title>
 </head>
@@ -12,14 +13,14 @@
     <div id="app">
       <section class="bar">
         <div class="buttons">
-          <button @click="start" class="start">start</button>
-          <button @click="pause" class="pause">pause</button>
-          <button @click="reset" class="reset">reset</button>
+          <el-button @click="start" class="start">start</el-button>
+          <el-button @click="pause" class="pause">pause</el-button>
+          <el-button @click="reset" class="reset">reset</el-button>
         </div>
         <div class="input">
-          <input v-model="iptHour" class="ipt-hour" type="number"></input>
-          <input v-model="iptMin" class="ipt-min" type="number"></input>
-          <input v-model="iptSec" class="ipt-sec" type="number"></input>
+          <el-input placeholder="00" v-model="iptHour" class="ipt-hour" type="number"></el-input>
+          <el-input placeholder="00" v-model="iptMin" class="ipt-min" type="number"></el-input>
+          <el-input placeholder="00" v-model="iptSec" class="ipt-sec" type="number"></el-input>
         </div>
       </section>
       <section class="se-main">
@@ -32,5 +33,6 @@
   <footer></footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/element-ui@2.14.0/lib/index.js"></script>
 <script src="./main.js"></script>
 </html>
