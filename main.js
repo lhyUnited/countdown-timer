@@ -11,55 +11,48 @@ const vue = new Vue({
     fSec: 0,
     total: 0,
     timerId: '',
-    state: ''
+    state: '',
+    initialValue: {}
+  },
+  watch: {
+    state: {
+      handler () {
+        if (this.state === 'playing') {
+          let ipts = [this.$refs['hour'], this.$refs['min'], this.$refs['sec']]
+          ipts.forEach(ipt => {
+            ipt.readonly = true
+          })
+        }
+      }
+    }
   },
   methods: {
-    getIpt (option) {
-      switch (option) {
-        case 'hour':
-          return this.iptHour
-          break
-        case 'min':
-          return this.iptMin
-          break
-        case 'sec':
-          return this.iptSec
-          break
-        default:
-          return null
-      }
-    },
     /**
      * @returns {Boolean}
      */
-    checkValue () {
-      if (!this.iptHour && !this.iptMin && !this.iptSec) {
-        this.$message({
-          message: '请输入参数',
+    checkValue (props) {
+      this.fHour = parseInt(this.iptHour) ? parseInt(this.iptHour) : 0
+      this.fMin = parseInt(this.iptMin) ? parseInt(this.iptMin) : 0
+      this.fSec = parseInt(this.iptSec) ? parseInt(this.iptSec) : 0
+      if (!this.fHour && !this.fMin && !this.fSec) {
+        this.$notify({
+          message: 'Please input some time',
           type: 'error'
         })
         return false
       } else {
-        // 处理空值
-        this.fHour = this.iptHour === '' ? 0 : parseInt(this.iptHour)
-        this.fMin = this.iptMin === '' ? 0 : parseInt(this.iptMin)
-        this.fSec = this.iptSec === '' ? 0 : parseInt(this.iptSec)
+        // 处理非法输入
         // 判断是否越界
         this.total = this.fHour * 60 * 60 + this.fMin * 60 + this.fSec
         if (this.total > limit) {
-          this.$message({
-            message: '参数过大，请缩小范围',
+          this.$notify({
+            message: `inputs are greater than the limit ${limit}`,
             type: 'error'
           })
           return false
-        } else if (this.total === 0) {
-          this.$message({
-            message: '参数不能为0',
-            type: 'error'
-          })
         }
-        // 处理非法输入
-        this.seconds2Standard(this.total)
+        // 格式化输入
+        props === 'start' && this.seconds2Standard(this.total)
         return true
       }
     },
@@ -77,32 +70,56 @@ const vue = new Vue({
       this.iptMin = min < 10 ? '0' + min : min
       this.iptSec = sec < 10 ? '0' + sec : sec
     },
-    start () {
-      if (!this.checkValue()) {
+    initial () {
+      if (!this.checkValue('initial')) {
         return
-      } else if (this.state === 'playing') {
+      }
+      const h = this.fHour < 10 ? '0' + this.fHour : this.fHour
+      const m = this.fMin < 10 ? '0' + this.fMin : this.fMin
+      const s = this.fSec < 10 ? '0' + this.fSec : this.fSec
+      this.initialValue = {
+        h, m, s
+      }
+    },
+    start () {
+      if (!this.checkValue('start')) {
+        return
+      }
+      if (this.state === 'playing') {
         return
       }
       this.timerId = setInterval(this.countdown, 1000)
+      this.state = 'playing'
+    },
+    pause () {
+      if (this.state === 'playing') {
+        console.log(this.total)
+        clearInterval(this.timerId)
+      }
+      this.state = 'paused'
+    },
+    reset () {
+      clearInterval(this.timerId)
+      this.iptHour = ''
+      this.iptMin = ''
+      this.iptSec = ''
+      this.state = 'reset'
     },
     countdown () {
       this.total -= 1
-      this.state = 'playing'
       if (this.total === 0) {
         clearInterval(this.timerId)
         this.state = 'paused'
         this.$nextTick(() => {
           this.$notify({
-            message: '计时结束',
+            dangerouslyUseHTMLString: true,
+            message: `<strong>${this.initialValue.h}:${this.initialValue.m}:${this.initialValue.s}</strong> is over`,
             type: 'success'
           })
         })
       }
       this.seconds2Standard(this.total)
     },
-    pause () { },
-    reset () { }
   }
 })
 vue.__proto__.$notify = ELEMENT.Notification
-vue.__proto__.$message = ELEMENT.Message
