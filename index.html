@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
+  <title>Timer</title>
+</head>
+<body>
+  <header></header>
+  <main>
+    <div id="app">
+      <section class="bar">
+        <div class="buttons">
+          <button @click="start" class="start">start</button>
+          <button @click="pause" class="pause">pause</button>
+          <button @click="reset" class="reset">reset</button>
+        </div>
+        <div class="input">
+          <input v-model="iptHour" class="ipt-hour" type="number"></input>
+          <input v-model="iptMin" class="ipt-min" type="number"></input>
+          <input v-model="iptSec" class="ipt-sec" type="number"></input>
+        </div>
+      </section>
+      <section class="se-main">
+        <div class="hour"></div>
+        <div class="min"></div>
+        <div class="sec"></div>
+      </section>
+    </div>
+  </main>
+  <footer></footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+<script src="./main.js"></script>
+</html>
