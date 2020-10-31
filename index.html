@@ -13,20 +13,20 @@
     <div id="app">
       <section class="bar">
         <div class="input">
-          <el-input ref="hour" name="hour" placeholder="00" @change="initial"
+          <el-input type="number" ref="hour" name="hour" placeholder="00" @change="initial"
            v-model="iptHour" class="ipt-hour"></el-input>
           <span>:</span>
-          <el-input ref="min" name="min" placeholder="00" @change="initial"
+          <el-input type="number" ref="min" name="min" placeholder="00" @change="initial"
            v-model="iptMin" class="ipt-min"></el-input>
           <span>:</span>
-          <el-input ref="sec" name="sec" placeholder="00" @change="initial"
+          <el-input type="number" ref="sec" name="sec" placeholder="00" @change="initial"
           v-model="iptSec" class="ipt-sec"></el-input>
           <div v-show="state === 'playing'" class="mask"></div>
         </div>
         <div class="buttons">
           <el-button type="success" @click="start" class="start">start</el-button>
           <el-button type="primary" @click="pause" class="pause">pause</el-button>
-          <el-button type="danger"@click="reset" class="reset">reset</el-button>
+          <el-button type="danger" @click="reset" class="reset">reset</el-button>
         </div>
       </section>
     </div>

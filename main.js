@@ -14,26 +14,14 @@ const vue = new Vue({
     state: '',
     initialValue: {}
   },
-  watch: {
-    state: {
-      handler () {
-        if (this.state === 'playing') {
-          let ipts = [this.$refs['hour'], this.$refs['min'], this.$refs['sec']]
-          ipts.forEach(ipt => {
-            ipt.readonly = true
-          })
-        }
-      }
-    }
-  },
   methods: {
     /**
      * @returns {Boolean}
      */
     checkValue (props) {
-      this.fHour = parseInt(this.iptHour) ? parseInt(this.iptHour) : 0
-      this.fMin = parseInt(this.iptMin) ? parseInt(this.iptMin) : 0
-      this.fSec = parseInt(this.iptSec) ? parseInt(this.iptSec) : 0
+      this.fHour = parseInt(this.iptHour) && parseInt(this.iptHour) > 0 ? parseInt(this.iptHour) : 0
+      this.fMin = parseInt(this.iptMin) && parseInt(this.iptMin) > 0 ? parseInt(this.iptMin) : 0
+      this.fSec = parseInt(this.iptSec) && parseInt(this.iptSec) > 0 ? parseInt(this.iptSec) : 0
       if (!this.fHour && !this.fMin && !this.fSec) {
         this.$notify({
           message: 'Please input some time',
@@ -74,6 +62,7 @@ const vue = new Vue({
       if (!this.checkValue('initial')) {
         return
       }
+      // 保存用户输入
       const h = this.fHour < 10 ? '0' + this.fHour : this.fHour
       const m = this.fMin < 10 ? '0' + this.fMin : this.fMin
       const s = this.fSec < 10 ? '0' + this.fSec : this.fSec
